@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import QuizForm from "./components/QuizForm";
+import QuizList from "./components/QuizList";
+import UpdateQuiz from "./components/UpdateQuiz";
+import DeleteQuiz from "./components/DeleteQuiz";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
+  const { isAdmin } = useAuth();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Link to="/">
+          <h1>Quiz App</h1>
+        </Link>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          {isAdmin && (
+            <>
+              <Route path="/add-quiz" element={<QuizForm />} />
+              <Route path="/quizzes/update/:id" element={<UpdateQuiz />} />
+              <Route path="/quizzes/delete/:id" element={<DeleteQuiz />} />
+            </>
+          )}
+          <Route path="/quizzes" element={<QuizList />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
