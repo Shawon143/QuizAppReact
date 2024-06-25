@@ -1,6 +1,70 @@
 // src/components/QuizForm.js
 import React, { useState } from "react";
 import axiosInstance from "../axiosConfig";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+`;
+
+const Title = styled.h2`
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #333;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
+const OptionGroup = styled.div`
+  margin-bottom: 10px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+`;
 
 const QuizForm = () => {
   const [title, setTitle] = useState("");
@@ -44,31 +108,31 @@ const QuizForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add a new Quiz</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input
+    <Container>
+      <Title>Add a new Quiz</Title>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label>Title:</Label>
+          <Input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Category:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Category:</Label>
+          <Input
             type="text"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
           />
-        </div>
+        </FormGroup>
         {questions.map((q, index) => (
-          <div key={index}>
-            <label>Question {index + 1}:</label>
-            <input
+          <FormGroup key={index}>
+            <Label>Question {index + 1}:</Label>
+            <Input
               type="text"
               name="question"
               value={q.question}
@@ -76,34 +140,34 @@ const QuizForm = () => {
               required
             />
             {q.options.map((option, optionIndex) => (
-              <div key={optionIndex}>
-                <label>Option {optionIndex + 1}:</label>
-                <input
+              <OptionGroup key={optionIndex}>
+                <Label>Option {optionIndex + 1}:</Label>
+                <Input
                   type="text"
                   value={option}
                   onChange={(e) => handleInputChange(e, index, optionIndex)}
                   required
                 />
-              </div>
+              </OptionGroup>
             ))}
-            <div>
-              <label>Answer:</label>
-              <input
+            <FormGroup>
+              <Label>Answer:</Label>
+              <Input
                 type="text"
                 name="answer"
                 value={q.answer}
                 onChange={(e) => handleInputChange(e, index)}
                 required
               />
-            </div>
-          </div>
+            </FormGroup>
+          </FormGroup>
         ))}
-        <button type="button" onClick={handleAddQuestion}>
+        <Button type="button" onClick={handleAddQuestion}>
           Add Question
-        </button>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+        </Button>
+        <Button type="submit">Submit</Button>
+      </Form>
+    </Container>
   );
 };
 
